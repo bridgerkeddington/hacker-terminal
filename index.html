@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Terminal Portfolio</title>
+    <style>
+        body { background-color: #0d1117; color: #00f0ff; font-family: 'Courier New', monospace; padding: 20px; }
+        .prompt { color: #39d353; font-weight: bold; }
+        input { background: transparent; border: none; color: white; font-family: inherit; font-size: inherit; outline: none; width: 50%; }
+        .hidden { display: none; }
+        a { color: #e1e4e8; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div id="history">
+        <p>Welcome to Cloud_Terminal v1.0. <br>Type <span style="color:white">'help'</span> to see available commands.</p>
+    </div>
+    <div id="input-area">
+        <span class="prompt">user@cloud:~$</span> 
+        <input type="text" id="commandInput" autofocus autocomplete="off">
+    </div>
+
+    <script>
+        const input = document.getElementById('commandInput');
+        const history = document.getElementById('history');
+
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                const cmd = input.value.toLowerCase().trim();
+                addToHistory(cmd);
+                processCommand(cmd);
+                input.value = '';
+            }
+        });
+
+        function addToHistory(cmd) {
+            const line = document.createElement('div');
+            line.innerHTML = `<span class="prompt">user@cloud:~$</span> ${cmd}`;
+            history.appendChild(line);
+        }
+
+        function processCommand(cmd) {
+            const response = document.createElement('div');
+            response.style.marginBottom = "10px";
+            response.style.color = "white";
+
+            if (cmd === 'help') {
+                response.innerHTML = "Available commands: <br> - about<br> - projects<br> - social<br> - clear";
+            } else if (cmd === 'about') {
+                response.innerHTML = "I am an IT Student learning Cloud Computing. I love Linux, AWS, and Automation.";
+            } else if (cmd === 'projects') {
+                response.innerHTML = "1. Linux Backup Script (Bash)<br>2. Cloud Terminal Portfolio (HTML/JS)<br>3. Network Scanner (Python)";
+            } else if (cmd === 'social') {
+                response.innerHTML = "<a href='https://github.com/'>My GitHub</a> | <a href='https://linkedin.com'>My LinkedIn</a>";
+            } else if (cmd === 'clear') {
+                history.innerHTML = "";
+                return; // Don't append empty response
+            } else {
+                response.innerHTML = `Command not found: ${cmd}. Type 'help' for options.`;
+                response.style.color = "red";
+            }
+            history.appendChild(response);
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    </script>
+</body>
+</html>
